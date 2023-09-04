@@ -1,20 +1,26 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {NativeBaseProvider} from "native-base";
+import theme from "./src/common/constants/theme";
+import UserContext from "./src/common/contexts/UserContext";
+import MainNavigator from "./src/ui/navigation/MainNavigator/MainNavigator";
+import {NavigationContainer} from "@react-navigation/native";
+import 'moment/locale/es'
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+
+const queryClient = new QueryClient()
+
+const App = () =>{
+    return(
+        <QueryClientProvider client={queryClient}>
+            <NativeBaseProvider theme={theme}>
+                <NavigationContainer>
+                    <UserContext>
+                            <MainNavigator/>
+                    </UserContext>
+                </NavigationContainer>
+            </NativeBaseProvider>
+        </QueryClientProvider>
+    )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App
