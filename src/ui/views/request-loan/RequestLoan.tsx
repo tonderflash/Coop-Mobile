@@ -10,7 +10,6 @@ import KeyValue from "../../../common/interfaces/keyValue";
 import {number, object} from "yup";
 
 const RequestLoan: FC<NavigatorScreenProps<'RequestLoan'>> = ()=>{
-    const [monthlyPayment, setMonthlyPayment] = useState(0)
     const [interest, setInterest] = useState(0.105)
     const [formValues, setFormValues] = useState({
         amount: 0,
@@ -37,12 +36,16 @@ const RequestLoan: FC<NavigatorScreenProps<'RequestLoan'>> = ()=>{
         setFormValues(prev => ({...prev, [name]: value}))
     }
 
-    useEffect(()=>{
+    const monthlyPayment = useMemo(()=>{
+        let result = 0
+
         if (formValues.amount && formValues.paymentTerm){
             const payments = (formValues.amount/formValues.paymentTerm) * interest
 
-            setMonthlyPayment(payments)
+            result = payments
         }
+
+        return result
     },[formValues])
 
     const handleSubmit = (value) =>{
